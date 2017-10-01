@@ -9,13 +9,15 @@ public class Gif {
     private String name;
     private LocalDate dateUploaded;
     private String username;
-    private boolean favourite;
+    private boolean favorite;
+    private int categoryId;
 
-    public Gif(String name, LocalDate dateUploaded, String username, boolean favourite) {
+    public Gif(String name, LocalDate dateUploaded, String username, boolean favorite, int categoryId) {
         this.name = name;
         this.dateUploaded = dateUploaded;
         this.username = username;
-        this.favourite = favourite;
+        this.favorite = favorite;
+        this.categoryId = categoryId;
     }
 
     public String getName() {
@@ -42,11 +44,19 @@ public class Gif {
         this.username = username;
     }
 
-    public boolean isFavourite() {
-        return favourite;
+    public boolean isFavorite() {
+        return favorite;
     }
 
-    public void setFavourite(boolean favourite) {
-        this.favourite = favourite;
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 }

@@ -1,11 +1,15 @@
 package com.eo.giflib.controller;
 
+import com.eo.giflib.data.GifRepository;
 import com.eo.giflib.model.Gif;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Created by evansowino on 29/09/2017.
@@ -13,29 +17,33 @@ import java.time.LocalDate;
 @Controller
 public class GifController {
 
+    @Autowired
+    private GifRepository gifRepository;
+
     @RequestMapping("/")
-    public String listGifs() {
+    public String listGifs(ModelMap modelMap) {
+        List<Gif> allGifs = gifRepository.getAllGifs();
+        modelMap.put("gifs", allGifs);
         return "home";
     }
 
-    @RequestMapping("/favourites")
-    public String getFavourites() {
-        return "favourites";
+    @RequestMapping("/favorites")
+    public String getFavorites(ModelMap modelMap) {
+        modelMap.put("gifs", gifRepository.getAllFavorites());
+        return "favorites";
     }
 
-    @RequestMapping("/categories")
-    public String getCategories() {
-        return "categories";
+
+    @RequestMapping("/gif/{name}")
+    public String getDetails(@PathVariable String name, ModelMap modelMap) {
+        Gif gif = gifRepository.findByName(name);
+        modelMap.put("gif", gif);
+        return "gif-details";
     }
 
-    @RequestMapping("/category")
-    public String getCategory() {
-        return "category";
-    }
-
-    @RequestMapping("/gif")
-    public String getDetails(ModelMap modelMap) {
-        Gif gif = new Gif("compiler-bot", LocalDate.of(2017, 9, 29), "mBot", true);
+    @RequestMapping("/search")
+    public String searchByName(@RequestParam String q, ModelMap modelMap) {
+        Gif gif = gifRepository.findByName(q);
         modelMap.put("gif", gif);
         return "gif-details";
     }
