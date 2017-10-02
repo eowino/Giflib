@@ -43,8 +43,16 @@ public class GifController {
 
     @RequestMapping("/search")
     public String searchByName(@RequestParam String q, ModelMap modelMap) {
+        String result = "error";
         Gif gif = gifRepository.findByName(q);
-        modelMap.put("gif", gif);
-        return "gif-details";
+
+        if(gif != null) {
+            modelMap.put("gif", gif);
+            result = "gif-details";
+        } else {
+            modelMap.put("gifs", gifRepository.getAllGifs());
+        }
+
+        return result;
     }
 }
